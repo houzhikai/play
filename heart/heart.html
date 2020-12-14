@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<!-- <html lang="en"> -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <meta http-equiv="X-UA-Compatible" content="ie=edge"> -->
+    <title>跳动的心</title>
+    <style>
+        html,body {
+            width: 100%;
+            height: 100%;
+        }
+        body{
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgb(190, 153, 153);
+            background-repeat: repeat;
+        }
+        /* 心的初始样式 */
+        .heart {
+            width: 60px;
+            height: 60px;
+            background: red;
+            position: relative;
+            /* infinite 全局变量  ease-in 动画缓慢开始，然后逐渐加速直到结束，在结束点时突然停止。*/
+            animation: beat .6s infinite ease-in;
+        }
+        .heart::before,.heart::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: red;
+            border-radius: 50%;
+        }
+        .heart::before {
+            left: 30px;
+        }
+        .heart::after {
+            top: -30px;
+        }
+
+        /* @keyframes 关键帧 */
+        @keyframes beat {
+            /* scale(n) n倍 rotate 角度 */
+            0% {
+                transform: scale(1) rotate(-45deg);
+            }
+            45% {
+                transform: scale(1) rotate(-45deg);
+            }
+            55% {
+                transform: scale(1.3) rotate(-30deg);
+            }
+            70% {
+                transform: scale(1) rotate(-45deg);
+            }
+            85% {
+                transform: scale(1.3) rotate(-60deg);
+            }
+            100% {
+                transform: scale(1) rotate(-45deg);
+            }
+        }
+       
+    </style>
+</head>
+<body>
+    <div class="heart"></div>
+</body>
+</html>
