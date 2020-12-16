@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<!-- <html lang="en"> -->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>音乐播放器</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .music {
+            width: 200px;
+            height: 300px;
+            background: #ccc;
+            box-shadow: 3px -3px 3px #666;
+            border-radius: 6px;
+            margin: 200px auto;
+        }
+
+        .music .screen {
+            height: 70%;
+            width: 96%;
+            background: #ccc;
+            margin-left: 2%;
+            margin-top: 2%;
+        }
+
+        .screen img {
+            width: 100px;
+            height: 100px;
+            margin-top: 50px;
+            margin-left: 40px;
+            transform: rotate(30deg);
+            -webkit-transform: rotate(30deg);
+            -o-transform: rotate(30deg);
+            -ms-transform: rotate(30deg);
+            -moz-transform: rotate(30deg);
+            cursor: pointer;
+        }
+
+        .buttons {
+            height: 25%;
+            width: 96%;
+            background: wheat;
+            margin-left: 2%;
+            margin-top: 4%;
+        }
+
+        .buttons img {
+            width: 45px;
+            height: 45px;
+            margin-top: 15px;
+            margin-left: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .buttons img:active {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="music" class="music">
+        <div class="screen">
+            <img src="./imgs/1.svg">
+        </div>
+        <div class="buttons">
+            <img id="pre" src="./imgs/netx1.svg">
+            <img id="start" src="./imgs/start.svg">
+            <img id="next" src="./imgs/next.svg">
+        </div>
+    </div>
+
+    <script>
+//         function _center(dom){
+//     dom.style.position="absolute";
+//     dom.style.top="50%";
+//     dom.style.left="50%";
+//     dom.style.marginTop=-dom.offsetHeight/2+"px";
+//     dom.style.marginLeft=-dom.offsetWidth/2+"px";
+// }
+// function dom(id){
+//     if(id.toString().indexOf("#")!=1){
+//         id=id.replace("#","");
+//     }
+//     return document.getElementById(id);
+// }
+// var musicDom=dom("#music");
+// _center(musicDom);
+        //封装操作音乐
+        let i = 0
+        let musicBox = {
+            musicDom: null,
+            songs: [],
+            init() {
+                this.musicDom = document.createElement('audio')
+            },
+            add(src) {
+                this.songs.push(src)
+            },
+            play(index) {
+                this.musicDom.src = this.songs[index]
+                this.musicDom.play()
+            },
+            stop() {
+                this.musicDom.pause()
+            },
+            pre() {
+                this.play(i - 1)
+            },
+            next() {
+                this.play(i + 1)
+            }
+        }
+
+        //添加歌曲
+        musicBox.add("mp3/6.mp3");
+        musicBox.add("mp3/7.mp3");
+        musicBox.add("mp3/8.mp3");
+        musicBox.add("mp3/9.mp3");
+        musicBox.add("mp3/10.mp3");
+
+
+        //点击播放/暂停
+        let $start = document.getElementById('start')
+        let $next = document.getElementById('next')
+        let $pre = document.getElementById('pre')
+
+        musicBox.init()
+        let onOff = true
+        $start.onclick = function() {
+            if(onOff) {
+                $start.src = "imgs/pause.svg"
+                musicBox.play(i)
+                onOff=false
+            }
+            else {
+                $start.src = "imgs/start/svg"
+                onOff = true
+                musicBox.stop()
+            }
+        }
+
+
+        //点击下一首
+        $next.onclick = function() {
+            musicBox.next()
+            i++
+        } 
+
+        //点击上一首
+        $pre.onclick = function() {
+            musicBox.pre()
+        }
+    </script>
+</body>
+
+</html>
