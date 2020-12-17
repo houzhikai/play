@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>放大镜</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            position: relative;
+            display: block;
+            width: 400px;
+            height: 255px;
+            margin: 50px;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 4px 0 rgba(0, 0, 0, .3);
+            border-radius: 6px;
+            /* background-color: red; */
+        }
+        .small-box {
+        position: relative;
+         z-index: 1;
+        }
+        .mark {
+            position: absolute;
+            display: block;
+            width: 400px;
+            height: 255px;
+            background-color: #fff;
+            filter: alpha(opacity=0);
+            opacity: 0;
+            z-index: 10;
+        }
+        .float-box {
+            position: absolute;
+            display: none;
+            width: 160px;
+            height: 120px;
+            border: 1px solid #ccc;
+            background: #ffc;
+            filter: alpha(opacity=50);
+            opacity: 0.5;
+        }
+        
+        .big-box {
+            position: absolute;
+            display: none;
+            top: 0;
+            left: 460px;
+            width: 400px;
+            height: 300px;
+            overflow: hidden;
+            border: 1px solid #ccc;
+            z-index: 1;
+        }
+        .big-box img {
+            position: absolute;
+            z-index: 5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 小图 -->
+        <div class="small-box">
+            <div class="mark"></div>   
+        <!-- 放大镜 -->
+        <div class="float-box"></div>
+            <img src="./imgs/small.jpg" >
+        </div>
+
+        <!-- 大图 -->
+        <div class="big-box">
+            <img src="./imgs/big.jpg">
+        </div>
+    </div>
+</body>
+<script>
+    window.onload = function() {
+        let $container = document.querySelector('.container')
+        let $smallBox = document.querySelector('.small-box')
+        let $mark = document.querySelector('.mark')
+        let $floatBox = document.querySelector('.float-box')
+        let $bigBox = document.querySelector('.big-box')
+        let $bigBoxImg = $bigBox.querySelector('img')
+        //鼠标移入事件
+        $mark.onmouseover = () => {
+            $floatBox.style.display = "block"
+            $bigBox.style.display = "block"
+        }
+
+        //鼠标移出事件
+        $mark.onmouseout = () => {
+            $floatBox.style.display = 'none'
+            $bigBox.style.display = 'none'
+        }
+
+        //鼠标移动事件
+        $mark.onmousemove = (ev) => {
+            // console.log(window.event)
+            let _event = ev || window.event;
+            // console.log(_event)
+            //        clientX  当事件被触发时鼠标指针向对于浏览器页面（或客户区）的水平坐标。
+            let left = _event.clientX - $container.offsetLeft - $smallBox.offsetLeft - $floatBox.offsetWidth / 2
+            let top = _event.clientY - $container.offsetTop - $smallBox.offsetTop - $floatBox.offsetHeight / 2
+           
+            
+            if (left < 0) {
+                left = 0
+            }
+             else if (left > ($mark.offsetWidth - $floatBox.offsetWidth)) {
+                left = $mark.offsetWidth - $floatBox.offsetWidth
+            }
+            if (top < 0) {
+                top = 0
+            } else if (top > ($mark.offsetHeight - $floatBox.offsetHeight)) {
+                top = $mark.offsetHeight - $floatBox.offsetHeight
+            }
+            console.log(left, top);
+            $floatBox.style.left = left + "px"   //oSmall.offsetLeft的值是相对什么而言
+            $floatBox.style.top = top + "px"
+            let percentX = left / ($mark.offsetWidth - $floatBox.offsetWidth)
+            let percentY = top / ($mark.offsetHeight - $floatBox.offsetHeight)
+            $bigBoxImg.style.left = -percentX * ($bigBoxImg.offsetWidth - $bigBox.offsetWidth) + "px"
+            $bigBoxImg.style.top = -percentY * ($bigBoxImg.offsetHeight - $bigBox.offsetHeight) + "px"
+        }
+    }
+</script>
+</html>
